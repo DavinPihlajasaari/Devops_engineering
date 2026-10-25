@@ -54,7 +54,7 @@ def driver():
     yield driver
     driver.quit()
 
-@pytest.mark.skip(reason="Skipping this test for demo")  # comment to enable the test
+# @pytest.mark.skip(reason="Skipping this test for demo")  # comment to enable the test
 def test_lab_fi_title(driver):
     """
     Verify that the LAB.fi homepage has the correct page title.
@@ -69,7 +69,7 @@ def test_lab_fi_title(driver):
     """
     print("Checking for correct page title")
     
-    driver.get("https://lab.fi/en")
+    driver.get("https://www.w3schools.com")
     time.sleep(2)  # not required, but pause so you can see the page
     
     assert "LAB University of Applied Sciences | LAB.fi" in driver.title # use the Selenium's built-in property
@@ -79,7 +79,7 @@ def test_lab_fi_title(driver):
     
     time.sleep(2)  # not required, but pause so you can see the page
 
-@pytest.mark.skip(reason="Skipping this test for demo")  # comment to enable the test
+# @pytest.mark.skip(reason="Skipping this test for demo")  # comment to enable the test
 def test_lab_fi_meta_description(driver):
     """
     Verify that the LAB.fi homepage meta description is correct.
@@ -95,7 +95,7 @@ def test_lab_fi_meta_description(driver):
     """
     print("Checking for correct meta description")
     
-    driver.get("https://lab.fi/en")
+    driver.get("https://www.w3schools.com")
     time.sleep(2)  # not required, but pause so you can see the page
     
     ############# there are multiple ways of doing this #############
@@ -112,7 +112,7 @@ def test_lab_fi_meta_description(driver):
     
     time.sleep(2)  # not required, but pause so you can see the page
 
-@pytest.mark.skip(reason="Skipping this test for demo")  # comment to enable the test
+# @pytest.mark.skip(reason="Skipping this test for demo")  # comment to enable the test
 def test_page_navigation(driver):
     """
     Verify navigation from the LAB.fi homepage to a specific news page.
@@ -128,7 +128,7 @@ def test_page_navigation(driver):
     """
     print("Checking for correct meta description")
     
-    driver.get("https://lab.fi/en")
+    driver.get("https://www.w3schools.com")
     time.sleep(2)  # not required, but pause so you can see the page
     
     try:    # let's see if a cookie banner appears, and try to close it.
@@ -147,16 +147,16 @@ def test_page_navigation(driver):
     #)
     #button.click()
     
-    link = driver.find_element(By.CSS_SELECTOR, 'a[data-drupal-link-system-path="node/5"]') # but in this case, let's try to navigate by finding a specific Drupal node.
+    link = driver.find_element(By.CSS_SELECTOR, '/python/default.asp') # but in this case, let's try to navigate by finding a specific Drupal node.
     link.click()
     
-    WebDriverWait(driver, 10).until(EC.url_contains("/news-and-stories")) # wait until page navigation has completed
+    WebDriverWait(driver, 10).until(EC.url_contains("/python/default.asp")) # wait until page navigation has completed
     
-    assert "/news-and-stories" in driver.current_url # check we arrived to the correct page, note: this only works if a real URL transition happened, if the contents were only dynamically updated, something else that has "changed" should be found on the page
+    assert "/python/default.asp" in driver.current_url # check we arrived to the correct page, note: this only works if a real URL transition happened, if the contents were only dynamically updated, something else that has "changed" should be found on the page
     
     time.sleep(2)  # not required, but pause so you can see the page
 
-@pytest.mark.skip(reason="Skipping this test for demo")  # comment to enable the test
+# @pytest.mark.skip(reason="Skipping this test for demo")  # comment to enable the test
 def test_front_page(driver):
     """
     Take screenshot of the LAB.fi front page for audit purposes.
@@ -170,7 +170,7 @@ def test_front_page(driver):
     """
     print("Checking that the front page looks OK")
     
-    driver.get("https://lab.fi/en")
+    driver.get("https://www.w3schools.com")
     time.sleep(2)  # not required, but pause so you can see the page
     
     # Take a screenshot for debugging/reporting
