@@ -1,11 +1,16 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Makes the page responsive on different devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hex to RGB Converter</title>
   <style>
+    /* Applies consistent sizing to all elements */
     * { box-sizing: border-box; }
+
+    /* Centers the converter and styles the page */
     body {
       margin: 0;
       min-height: 100vh;
@@ -16,6 +21,8 @@
       background: #f3f4f6;
       color: #171717;
     }
+
+    /* Styles the main converter card */
     .card {
       width: min(100%, 420px);
       padding: 28px;
@@ -24,10 +31,13 @@
       border-radius: 18px;
       box-shadow: 0 12px 35px rgb(0 0 0 / 7%);
     }
+
     h1 { margin: 0 0 8px; font-size: 1.6rem; }
     .hint { margin: 0 0 22px; color: #666; font-size: .95rem; }
     label { display: block; margin-bottom: 8px; font-weight: 600; }
     .input-row { display: flex; gap: 10px; }
+
+    /* Styles the text input and color picker */
     input[type="text"] {
       min-width: 0;
       flex: 1;
@@ -37,6 +47,7 @@
       font: inherit;
       text-transform: uppercase;
     }
+
     input[type="color"] {
       width: 48px;
       height: 48px;
@@ -46,6 +57,8 @@
       background: white;
       cursor: pointer;
     }
+
+    /* Displays the selected color */
     .preview {
       height: 130px;
       margin: 20px 0;
@@ -54,6 +67,8 @@
       background: #ff5733;
       transition: background-color .15s ease;
     }
+
+    /* Formats the RGB output */
     .result {
       padding: 14px;
       border-radius: 10px;
@@ -61,8 +76,11 @@
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
       line-height: 1.8;
     }
+
     .result strong { font-family: system-ui, sans-serif; }
     .error { min-height: 1.4em; margin: 10px 0 0; color: #b42318; font-size: .9rem; }
+
+    /* Styles the copy button and focus indicators */
     button {
       width: 100%;
       margin-top: 14px;
@@ -74,11 +92,16 @@
       font: inherit;
       cursor: pointer;
     }
+
     button:hover { background: #333; }
-    button:focus-visible, input:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+    button:focus-visible, input:focus-visible {
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
+    }
   </style>
 </head>
 <body>
+  <!-- Main converter interface -->
   <main class="card">
     <h1>Hex to RGB</h1>
     <p class="hint">Enter a hex color to see its RGB values.</p>
@@ -89,20 +112,24 @@
       <input id="colorPicker" type="color" value="#ff5733" aria-label="Choose a color">
     </div>
 
+    <!-- Shows the color preview and converted values -->
     <div id="preview" class="preview" aria-label="Color preview"></div>
     <div class="result" aria-live="polite">
       <strong>RGB result</strong><br>
       <span id="rgbResult">rgb(255, 87, 51)</span><br>
       <span id="objectResult">{ r: 255, g: 87, b: 51 }</span>
     </div>
+
+    <!-- Displays validation and clipboard errors -->
     <p id="error" class="error" role="alert"></p>
     <button id="copyButton" type="button">Copy RGB</button>
   </main>
 
   <script type="module">
-    // Replace this function with an import from your library if available:
+    // Imports the function that converts hex colors to RGB
     import { hexToRgb } from "./scripts/converter.js";
 
+    // Gets references to the HTML elements
     const hexInput = document.querySelector("#hexInput");
     const colorPicker = document.querySelector("#colorPicker");
     const preview = document.querySelector("#preview");
@@ -111,19 +138,27 @@
     const error = document.querySelector("#error");
     const copyButton = document.querySelector("#copyButton");
 
+    // Converts the input and updates the displayed results
     function updateFromHex() {
       try {
         const { r, g, b } = hexToRgb(hexInput.value.trim());
+
+        // Converts RGB values back to a normalized hex color
         const normalizedHex = "#" + [r, g, b]
           .map((value) => value.toString(16).padStart(2, "0"))
           .join("");
+
+        // Updates the preview, picker, and RGB results
         preview.style.backgroundColor = normalizedHex;
         colorPicker.value = normalizedHex;
         rgbResult.textContent = `rgb(${r}, ${g}, ${b})`;
         objectResult.textContent = `{ r: ${r}, g: ${g}, b: ${b} }`;
+
+        // Clears errors and enables copying
         error.textContent = "";
         copyButton.disabled = false;
       } catch (err) {
+        // Displays an error if the hex color is invalid
         error.textContent = err instanceof TypeError
           ? err.message
           : "Invalid hex color. Use #RGB or #RRGGBB.";
@@ -131,22 +166,32 @@
       }
     }
 
+    // Updates results whenever the user types a hex color
     hexInput.addEventListener("input", updateFromHex);
+
+    // Syncs the text input with the color picker
     colorPicker.addEventListener("input", () => {
       hexInput.value = colorPicker.value.toUpperCase();
       updateFromHex();
     });
+
+    // Copies the RGB value to the clipboard
     copyButton.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(rgbResult.textContent);
         copyButton.textContent = "Copied!";
+
+        // Restores the button label after a short delay
         setTimeout(() => { copyButton.textContent = "Copy RGB"; }, 1200);
       } catch {
+        // Reports clipboard access errors
         error.textContent = "Clipboard access is unavailable in this browser.";
       }
     });
 
+    // Converts the default color when the page loads
     updateFromHex();
   </script>
 </body>
 </html>
+```
